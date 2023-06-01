@@ -20,4 +20,10 @@ import { TaskModule } from './Task';
   providers: [],
   exports: [ConfigModule],
 })
-export class AppModule {}
+export class AppModule {
+  static port: number;
+
+  constructor() {
+    AppModule.port = Number.parseInt(process.env.PORT) || 4000;
+  }
+}
