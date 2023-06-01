@@ -9,6 +9,7 @@ import {
   DefaultValuePipe,
   ParseIntPipe,
   Query,
+  Req,
 } from '@nestjs/common';
 import { TaskService } from '../services/Task';
 import { CreateTaskDto, UpdateTaskDto } from '../dtos/Task';
@@ -38,7 +39,7 @@ export class TaskController {
     return this.taskService.deleteTask(taskId);
   }
 
-  @Get('/:authorId')
+  @Get()
   public async getTasks(
     @Query('page', new DefaultValuePipe(DEFAULT_PAGINATION_PAGE), ParseIntPipe)
     page: number,
@@ -50,8 +51,9 @@ export class TaskController {
     limit: number,
     @Query('search') search: string,
     @Query('orderBy') orderBy: OrderBy = OrderBy.ASC,
-    @Param('authorId') authorId: string,
+    @Req() request: any,
   ) {
+    const authorId = request?.user?.id;
     return this.taskService.getTasks(authorId, {
       limit,
       page,
