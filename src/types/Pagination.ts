@@ -1,7 +1,7 @@
 export class FindOptions {
   page: number;
   limit: number;
-  orderBy: OrderBy = OrderBy.ASC;
+  orderBy: OrderBy = OrderBy.DESC;
 }
 
 export enum OrderBy {
