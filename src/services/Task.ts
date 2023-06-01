@@ -29,7 +29,7 @@ export class TaskService {
 
       return task;
     } catch (error) {
-      throw new BadRequestException(JSON.stringify(error));
+      throw new BadRequestException(error);
     }
   }
 
@@ -48,7 +48,7 @@ export class TaskService {
 
       return task;
     } catch (error) {
-      throw new BadRequestException(JSON.stringify(error));
+      throw new BadRequestException(error);
     }
   }
 
@@ -62,7 +62,7 @@ export class TaskService {
 
       return !!result;
     } catch (error) {
-      throw new BadRequestException(JSON.stringify(error));
+      throw new BadRequestException(error);
     }
   }
 
@@ -99,7 +99,14 @@ export class TaskService {
           checklistItems: true,
         },
       });
-      const countAction = this.prismaService.task.count(where);
+      const countAction = this.prismaService.task.count({
+        where: {
+          AND: {
+            authorId,
+            ...options,
+          },
+        },
+      });
 
       const [count, tasks] = await Promise.all([countAction, tasksAction]);
 
@@ -113,7 +120,7 @@ export class TaskService {
 
       return { tasks, pagination };
     } catch (error) {
-      throw new BadRequestException(JSON.stringify(error));
+      throw new BadRequestException(error);
     }
   }
 
@@ -150,7 +157,7 @@ export class TaskService {
 
       return items;
     } catch (error) {
-      throw new BadRequestException(JSON.stringify(error));
+      throw new BadRequestException(error);
     }
   }
 
@@ -162,7 +169,7 @@ export class TaskService {
 
       return `Removed ${items.count} ${items.count === 1 ? 'item' : 'items'}.`;
     } catch (error) {
-      throw new BadRequestException(JSON.stringify(error));
+      throw new BadRequestException(error);
     }
   }
 }

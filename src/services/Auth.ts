@@ -42,7 +42,7 @@ export class AuthService {
 
       return 'User successfully registered.';
     } catch (error) {
-      throw new BadRequestException(JSON.stringify(error));
+      throw new BadRequestException(error);
     }
   }
 
@@ -104,7 +104,7 @@ export class AuthService {
 
       return !!token;
     } catch (error) {
-      throw new BadRequestException(JSON.stringify(error));
+      throw new BadRequestException(error);
     }
   }
 }

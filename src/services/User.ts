@@ -19,7 +19,7 @@ export class UserService {
 
       return filteredUser;
     } catch (error) {
-      throw new BadRequestException(JSON.stringify(error));
+      throw new BadRequestException(error);
     }
   }
 
@@ -35,7 +35,7 @@ export class UserService {
       const { password, ...filteredUser } = user;
       return filteredUser;
     } catch (error) {
-      throw new BadRequestException(JSON.stringify(error));
+      throw new BadRequestException(error);
     }
   }
 
@@ -49,7 +49,7 @@ export class UserService {
 
       return filteredUser;
     } catch (error) {
-      throw new BadRequestException(JSON.stringify(error));
+      throw new BadRequestException(error);
     }
   }
 }

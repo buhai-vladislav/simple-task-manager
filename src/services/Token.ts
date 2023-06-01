@@ -20,7 +20,7 @@ export class TokenService {
 
       return { accessToken, refreshToken };
     } catch (error) {
-      throw new BadRequestException(JSON.stringify(error));
+      throw new BadRequestException(error);
     }
   }
 
@@ -46,7 +46,7 @@ export class TokenService {
 
       return tokenPair;
     } catch (error) {
-      throw new BadRequestException(JSON.stringify(error));
+      throw new BadRequestException(error);
     }
   }
 }
