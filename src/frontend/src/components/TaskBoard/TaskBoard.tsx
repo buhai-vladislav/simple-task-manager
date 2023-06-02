@@ -84,13 +84,18 @@ export const TaskBoard = () => {
               <Spin size="large" />
             ) : (
               tasks?.data?.tasks?.map(
-                ({ title, description, id, createdAt }) => (
+                ({ title, description, id, createdAt, checklistItems }) => (
                   <TaskCard
                     key={id}
                     title={title}
                     description={description}
                     createdAt={createdAt}
                     onClick={handleItemClick(id)}
+                    completed={
+                      checklistItems?.length
+                        ? checklistItems?.every(({ completed }) => completed)
+                        : false
+                    }
                     actions={[
                       {
                         key: 1,
@@ -135,7 +140,7 @@ export const TaskBoard = () => {
           open={open}
           onOk={handleOk}
           onCancel={handleClose}
-          type={type}
+          modalType={type}
           id={item?.id}
           title={item?.title}
           description={item?.description}
