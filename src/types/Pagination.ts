@@ -1,17 +1,20 @@
-export class FindOptions {
+class FindOptions {
   page: number;
   limit: number;
   orderBy: OrderBy = OrderBy.DESC;
 }
 
-export enum OrderBy {
+enum OrderBy {
   ASC = 'asc',
   DESC = 'desc',
 }
 
-export interface IPaginationMeta {
+interface IPaginationMeta {
   page: number;
   limit: number;
   totalPages: number;
   count: number;
 }
+
+export type { IPaginationMeta };
+export { OrderBy, FindOptions };

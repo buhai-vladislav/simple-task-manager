@@ -1,5 +1,13 @@
+import { CheckListItem, Task } from '@prisma/client';
 import { FindOptions } from './Pagination';
 
-export class TaskFindOptions extends FindOptions {
+class TaskFindOptions extends FindOptions {
   search?: string;
 }
+
+interface ITask extends Task {
+  checklistItems?: CheckListItem[];
+}
+
+export type { ITask };
+export { TaskFindOptions };
