@@ -12,8 +12,8 @@ export const useUpdateTask = () => {
   return useMutation({
     mutationKey: ['update-task'],
     mutationFn: (body: IUpdateTask) => updateTaskAction(body),
-    onSuccess: (_data, variables) => {
-      const { id, ...newData } = variables;
+    onSuccess: (data, variables) => {
+      const { id } = variables;
       queryClient.setQueryData(['tasks'], (oldData: any) =>
         oldData
           ? {
@@ -21,7 +21,11 @@ export const useUpdateTask = () => {
               data: {
                 ...oldData?.data,
                 tasks: oldData?.data?.tasks?.map((item: ITask) =>
-                  item?.id === variables?.id ? { ...item, ...newData } : item,
+                  item?.id === id
+                    ? {
+                        ...data.data,
+                      }
+                    : item,
                 ),
               },
             }
