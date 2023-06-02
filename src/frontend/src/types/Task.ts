@@ -9,6 +9,12 @@ enum OrderBy {
   DESC = 'desc',
 }
 
+enum OperationType {
+  REMOVE = 'remove',
+  UPDATE = 'update',
+  ADD = 'add',
+}
+
 interface IPaginataionMeta {
   count: number;
   limit: number;
@@ -23,6 +29,7 @@ interface ICheckListItem {
   completed: boolean;
   createdAt: Date;
   updatedAt: Date;
+  type?: OperationType;
 }
 
 interface ITask {
@@ -44,6 +51,7 @@ interface IUpdateTask {
   id: string;
   title?: string;
   description?: string;
+  checkListItems?: Partial<ICheckListItem>[];
 }
 
 interface ICreateTask {
@@ -51,6 +59,11 @@ interface ICreateTask {
   title?: string;
   description?: string;
   checkListItems?: { title?: string; completed?: boolean }[];
+}
+
+interface IUpdateChecklistItem {
+  id: string;
+  completed?: boolean;
 }
 
 export type {
@@ -61,5 +74,6 @@ export type {
   IPaginataionMeta,
   IUpdateTask,
   ICreateTask,
+  IUpdateChecklistItem,
 };
-export { OrderBy };
+export { OrderBy, OperationType };
