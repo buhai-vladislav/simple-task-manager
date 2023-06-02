@@ -4,9 +4,10 @@ import { CheckListItem, Task } from '@prisma/client';
 import { CreateTaskDto, UpdateTaskDto } from '../dtos/Task';
 import {
   CheckListItemDto,
+  OperationType,
   UpdateCheckListItemDto,
 } from '../dtos/CheckListItem';
-import { TaskFindOptions } from 'src/types/Task';
+import { ITask, TaskFindOptions } from 'src/types/Task';
 import { IPaginationMeta } from 'src/types/Pagination';
 
 @Injectable()
@@ -33,18 +34,48 @@ export class TaskService {
     }
   }
 
-  public async updateTask(updateTaskDto: UpdateTaskDto): Promise<Task> {
+  public async updateTask(updateTaskDto: UpdateTaskDto): Promise<ITask> {
     try {
-      const { id, description, title } = updateTaskDto;
-      const task = await this.prismaService.task.update({
-        where: {
-          id,
-        },
-        data: {
-          description,
-          title,
-        },
-      });
+      const { id, description, title, checkListItems } = updateTaskDto;
+      const removing: string[] = checkListItems
+        .filter(({ type }) => type === OperationType.REMOVE)
+        .map(({ id }) => id);
+      const updating = checkListItems.filter(
+        ({ type }) => type === OperationType.UPDATE,
+      );
+      const adding = checkListItems
+        .filter(({ type }) => type === OperationType.ADD)
+        .map(({ title, completed }) => ({ title, completed }));
+      let task: ITask = null;
+
+      if (title || description) {
+        task = await this.prismaService.task.update({
+          where: {
+            id,
+          },
+          data: {
+            description,
+            title,
+          },
+          include: {
+            checklistItems: true,
+          },
+        });
+      }
+      if (removing.length > 0) {
+        await this.deleteChecklistItems(removing);
+        const filtered = task.checklistItems.filter(
+          ({ id }) => !(removing.findIndex((itemId) => itemId === id) !== -1),
+        );
+        task.checklistItems = filtered;
+      }
+      if (updating.length > 0) {
+        await this.updateChecklistItems(updating);
+      }
+      if (adding.length > 0) {
+        const items = await this.createChecklistItems(id, adding);
+        task.checklistItems = [...task.checklistItems, ...items];
+      }
 
       return task;
     } catch (error) {
