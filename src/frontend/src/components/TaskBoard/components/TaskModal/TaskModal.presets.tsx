@@ -16,6 +16,12 @@ export const TaskModalWrapper = styled.div`
     display: flex;
     justify-content: space-between;
     width: 100%;
+    gap: 10px;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 10px;
   }
 
   .create-block {
