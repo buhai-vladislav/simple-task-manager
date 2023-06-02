@@ -5,4 +5,5 @@ export {
   useUpdateTask,
   useRemoveTask,
   useCreateTask,
+  useUpdateChecklistItem,
 } from './task';
