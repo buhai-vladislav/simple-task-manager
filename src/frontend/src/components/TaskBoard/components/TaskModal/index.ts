@@ -1,3 +1,3 @@
+export type { ITaskModalProps } from './TaskModal.props';
 export { TaskModal } from './TaskModal';
-export type { ITaskFormProps, ITaskModalProps } from './TaskModal.props';
 export { ModalType } from './TaskModal.props';
