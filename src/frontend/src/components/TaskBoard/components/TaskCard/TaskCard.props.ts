@@ -6,6 +6,7 @@ interface ITaskCardProps {
   createdAt: Date;
   onClick: () => void;
   actions?: MenuProps['items'];
+  completed: boolean;
 }
 
 export type { ITaskCardProps };

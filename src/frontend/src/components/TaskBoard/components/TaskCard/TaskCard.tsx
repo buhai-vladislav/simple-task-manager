@@ -11,6 +11,7 @@ export const TaskCard: FC<ITaskCardProps> = ({
   createdAt,
   actions,
   onClick,
+  completed,
 }) => {
   const actionButton = useMemo(
     () => (
@@ -26,7 +27,7 @@ export const TaskCard: FC<ITaskCardProps> = ({
     [actions],
   );
   return (
-    <TaskCardWrapper onClick={onClick}>
+    <TaskCardWrapper onClick={onClick} completed={completed}>
       <div className="head">
         <h3>{title}</h3>
         {actions && actionButton}

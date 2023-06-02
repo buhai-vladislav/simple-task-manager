@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 
-export const TaskCardWrapper = styled.div`
+interface ITaskBoardWrapperProps {
+  completed: boolean;
+}
+
+export const TaskCardWrapper = styled.div<ITaskBoardWrapperProps>`
   display: flex;
   flex-direction: column;
   padding: 20px;
@@ -10,6 +14,8 @@ export const TaskCardWrapper = styled.div`
   width: 20vw;
   gap: 15px;
   justify-content: space-between;
+  background-color: ${({ completed }) =>
+    completed && completed ? '#e6f4ff' : 'tranperent'};
 
   .head {
     display: flex;
