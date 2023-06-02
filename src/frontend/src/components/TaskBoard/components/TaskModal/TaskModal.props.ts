@@ -1,20 +1,16 @@
 import { ClbType } from '../../../../hooks/useToast';
 import { ICheckListItem } from '../../../../types/Task';
+import { ITaskFormValues } from './components/TaskForm';
 
-interface ITaskModalProps extends Partial<ITaskFormProps> {
+interface ITaskModalProps extends Partial<ITaskFormValues> {
   id?: string;
   createdAt?: Date;
   checklistItems?: Array<ICheckListItem>;
-  type: ModalType;
+  modalType: ModalType;
   onOk: () => void;
   onCancel: () => void;
   open: boolean;
   openNotification: ClbType;
-}
-
-interface ITaskFormProps {
-  title: string;
-  description: string;
 }
 
 enum ModalType {
@@ -23,5 +19,5 @@ enum ModalType {
   CREATE,
 }
 
-export type { ITaskModalProps, ITaskFormProps };
+export type { ITaskModalProps };
 export { ModalType };
