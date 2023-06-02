@@ -5,7 +5,7 @@ import {
   IsString,
   IsUUID,
 } from 'class-validator';
-import { CheckListItemDto } from './CheckListItem';
+import { CheckListItemDto, UpdateCheckListItemDto } from './CheckListItem';
 
 export class CreateTaskDto {
   @IsUUID()
@@ -37,4 +37,8 @@ export class UpdateTaskDto {
   @IsString()
   @IsOptional()
   description?: string;
+
+  @IsOptional()
+  @IsArray()
+  checkListItems?: UpdateCheckListItemDto[];
 }

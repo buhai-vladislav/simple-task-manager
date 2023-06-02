@@ -1,12 +1,19 @@
 import {
   IsArray,
   IsBoolean,
+  IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
   IsUUID,
   ValidateNested,
 } from 'class-validator';
+
+export enum OperationType {
+  REMOVE = 'remove',
+  UPDATE = 'update',
+  ADD = 'add',
+}
 
 export class CheckListItemDto {
   @IsString()
@@ -30,6 +37,10 @@ export class UpdateCheckListItemDto {
   @IsBoolean()
   @IsOptional()
   completed?: boolean;
+
+  @IsOptional()
+  @IsEnum(OperationType)
+  type?: OperationType;
 }
 
 export class CreateChecklistItemsDto {
