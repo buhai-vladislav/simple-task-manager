@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './Auth';
 import { UserModule } from './User';
 import { TaskModule } from './Task';
+import { MailModule } from './Mail';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { TaskModule } from './Task';
     AuthModule,
     UserModule,
     TaskModule,
+    MailModule,
   ],
   controllers: [],
   providers: [],
