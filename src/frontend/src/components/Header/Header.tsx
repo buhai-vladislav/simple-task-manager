@@ -61,7 +61,7 @@ export const Header: FC = () => {
 
   const changeHandler: MenuProps['onClick'] = ({ key }) => {
     dispatch(setLocation(key));
-    navigate(`/${key}`);
+    navigate(`/${key}`, { state: location });
   };
 
   return (
