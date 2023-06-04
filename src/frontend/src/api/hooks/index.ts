@@ -1,4 +1,4 @@
-export { useSignup, useLogin } from './auth';
+export { useSignup, useLogin, useLogout } from './auth';
 export { useGetSelf } from './user';
 export {
   useGetTasks,
