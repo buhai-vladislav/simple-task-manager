@@ -12,8 +12,11 @@ import { UNAUTH_MESSAGE } from '../utils/constants';
 import { LoginDto } from '../dtos/Login';
 import { SignupDto } from '../dtos/Signup';
 import { TokenService } from './Token';
-import { IJwtPayload } from '../types/JwtPayload';
 import { RestePasswordDto } from '../dtos/ResetPassword';
+import { MailService } from './Mail';
+import type { IJwtPayload } from '../types/JwtPayload';
+import type { Request } from 'express';
+import type { ISigninResponse } from '../types/Auth';
 
 @Injectable()
 export class AuthService {
@@ -21,6 +24,7 @@ export class AuthService {
     private readonly userService: UserService,
     private readonly prismaService: PrismaService,
     private readonly tokenService: TokenService,
+    private readonly mailService: MailService,
   ) {}
 
   public async signup(userData: SignupDto): Promise<string> {
@@ -62,7 +66,7 @@ export class AuthService {
     return null;
   }
 
-  public async signin(signinDto: LoginDto) {
+  public async signin(signinDto: LoginDto): Promise<ISigninResponse> {
     const user = await this.validateUser(signinDto);
 
     if (user !== null) {
@@ -80,7 +84,7 @@ export class AuthService {
     }
   }
 
-  public async resetPassword(resetPassDto: RestePasswordDto) {
+  public async resetPassword(resetPassDto: RestePasswordDto): Promise<string> {
     const { id, password } = resetPassDto;
     const user = await this.userService.findOne({ id });
 
@@ -103,6 +107,39 @@ export class AuthService {
       });
 
       return !!token;
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
+  }
+
+  public async forgotPassword(
+    email: string,
+    request: Request,
+  ): Promise<string> {
+    try {
+      const user = await this.userService.findOne({ email });
+
+      if (!user) {
+        throw new BadRequestException('User not found!');
+      }
+
+      const { accessToken } = await this.tokenService.createTokenPair({
+        id: user.id,
+        email,
+      });
+      await this.prismaService.token.create({ data: { token: accessToken } });
+
+      const link = `${request.protocol}://${request.get(
+        'host',
+      )}/reset-password?token=${accessToken}`;
+
+      await this.mailService.sendMail({
+        to: email,
+        subject: 'Reset password',
+        html: `Link: ${link}`,
+      });
+
+      return 'Reset password link send on your email.';
     } catch (error) {
       throw new BadRequestException(error);
     }
