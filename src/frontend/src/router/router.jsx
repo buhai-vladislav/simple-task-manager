@@ -3,6 +3,7 @@ import RootLayout from '../Layouts/RootLayout';
 import { Signup } from '../components/Sigup';
 import { Login } from '../components/Login';
 import { TaskBoard } from '../components/TaskBoard';
+import { Logout } from '../components/Logout';
 
 export const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ export const router = createBrowserRouter([
       {
         path: '/profile',
         element: <></>,
+      },
+      {
+        path: '/logout',
+        element: <Logout />,
       },
     ],
   },
