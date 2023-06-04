@@ -8,6 +8,7 @@ import { UserService } from '../services/User';
 import { JwtStrategy } from '../strategies/JwtStrategy';
 import { AuthService } from 'src/services/Auth';
 import { ConfigModule } from '@nestjs/config';
+import { MailService } from 'src/services/Mail';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { ConfigModule } from '@nestjs/config';
     TokenService,
     UserService,
     AuthService,
+    MailService,
   ],
 })
 export class AuthModule {}
