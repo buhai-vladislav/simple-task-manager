@@ -12,7 +12,7 @@ import { UNAUTH_MESSAGE } from '../utils/constants';
 import { LoginDto } from '../dtos/Login';
 import { SignupDto } from '../dtos/Signup';
 import { TokenService } from './Token';
-import { RestePasswordDto } from '../dtos/ResetPassword';
+import { ResetPasswordDto } from '../dtos/ResetPassword';
 import { MailService } from './Mail';
 import type { IJwtPayload } from '../types/JwtPayload';
 import type { Request } from 'express';
@@ -84,16 +84,32 @@ export class AuthService {
     }
   }
 
-  public async resetPassword(resetPassDto: RestePasswordDto): Promise<string> {
-    const { id, password } = resetPassDto;
+  public async resetPassword(
+    resetPassDto: ResetPasswordDto,
+    token: string,
+  ): Promise<string> {
+    const storedToken = await this.prismaService.token.findUnique({
+      where: { token },
+    });
+
+    if (!storedToken) {
+      throw new BadRequestException('Token is expired.');
+    }
+
+    const { id } = await this.tokenService.verifyToken(token);
     const user = await this.userService.findOne({ id });
 
     if (!user) {
       throw new NotFoundException('User not found.');
     }
 
-    const passwordHash = await AuthUtils.generatePasswordHash(password);
-    await this.userService.updateUser({ id }, { password: passwordHash });
+    const passwordHash = await AuthUtils.generatePasswordHash(
+      resetPassDto.password,
+    );
+    await Promise.all([
+      this.userService.updateUser({ id }, { password: passwordHash }),
+      this.prismaService.token.delete({ where: { token } }),
+    ]);
 
     return 'The password was reset.';
   }
@@ -129,9 +145,7 @@ export class AuthService {
       });
       await this.prismaService.token.create({ data: { token: accessToken } });
 
-      const link = `${request.protocol}://${request.get(
-        'host',
-      )}/reset-password?token=${accessToken}`;
+      const link = `${process.env.FRONTEND_URL}/reset-password?token=${accessToken}`;
 
       await this.mailService.sendMail({
         to: email,
@@ -139,7 +153,7 @@ export class AuthService {
         html: `Link: ${link}`,
       });
 
-      return 'Reset password link send on your email.';
+      return 'The reset password link send to your email.';
     } catch (error) {
       throw new BadRequestException(error);
     }
