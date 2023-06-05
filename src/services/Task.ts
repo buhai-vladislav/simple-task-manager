@@ -64,18 +64,18 @@ export class TaskService {
       }
       if (removing.length > 0) {
         await this.deleteChecklistItems(removing);
-        const filtered = task.checklistItems.filter(
-          ({ id }) => !(removing.findIndex((itemId) => itemId === id) !== -1),
-        );
-        task.checklistItems = filtered;
       }
       if (updating.length > 0) {
         await this.updateChecklistItems(updating);
       }
       if (adding.length > 0) {
-        const items = await this.createChecklistItems(id, adding);
-        task.checklistItems = [...task.checklistItems, ...items];
+        await this.createChecklistItems(id, adding);
       }
+
+      const items = await this.prismaService.checkListItem.findMany({
+        where: { taskId: id },
+      });
+      task.checklistItems = items;
 
       return task;
     } catch (error) {
