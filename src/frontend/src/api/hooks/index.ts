@@ -1,4 +1,10 @@
-export { useSignup, useLogin, useLogout } from './auth';
+export {
+  useSignup,
+  useLogin,
+  useLogout,
+  useForgotPassword,
+  useResetPassword,
+} from './auth';
 export { useGetSelf } from './user';
 export {
   useGetTasks,
