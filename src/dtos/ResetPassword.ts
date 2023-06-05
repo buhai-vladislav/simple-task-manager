@@ -1,11 +1,7 @@
-import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
-export class RestePasswordDto {
+export class ResetPasswordDto {
   @IsString()
   @IsNotEmpty()
   password: string;
-
-  @IsUUID()
-  @IsNotEmpty()
-  id: string;
 }
