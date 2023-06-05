@@ -11,12 +11,12 @@ import {
 import { InputWrapper } from '../shared/InputWrapper';
 import { validationSchema } from './Login.helper';
 import { useLogin } from '../../api/hooks';
-import { AxiosError } from 'axios';
 import { ToastType, useToast } from '../../hooks/useToast';
 import { useAppDispatch } from '../../store';
 import { setUser } from '../../store/reducers/user';
 import { useNavigate } from 'react-router-dom';
 import { setLocation, setMenuKey } from '../../store/reducers/navigation';
+import { getErrorMessage } from '../../utils/error';
 
 export const Login: FC = () => {
   const { data, mutateAsync: login, isLoading } = useLogin();
@@ -29,16 +29,14 @@ export const Login: FC = () => {
       const { email, password } = values;
       await login({ email, password });
     } catch (error) {
-      if (error instanceof AxiosError) {
-        console.log(error?.response?.data?.message);
-        openNotification(
-          { message: error?.response?.data?.message },
-          ToastType.ERROR,
-        )();
-      }
+      const message = getErrorMessage(error);
+      openNotification({ message }, ToastType.ERROR)();
     } finally {
       formik.setSubmitting(false);
     }
+  }, []);
+  const navigateHandler = useCallback(() => {
+    navigate('/forgot-password');
   }, []);
 
   useEffect(() => {
@@ -94,6 +92,9 @@ export const Login: FC = () => {
           htmlType="submit"
         >
           Login
+        </Button>
+        <Button type="link" htmlType="button" onClick={navigateHandler}>
+          Forgot password?
         </Button>
       </form>
     </FormWrapper>
