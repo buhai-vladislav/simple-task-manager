@@ -29,11 +29,7 @@ export class TokenService {
       const token = await this.prismaSerice.token.findUnique({
         where: { token: refreshToken },
       });
-      const payload = await this.jwtService.verifyAsync(token.token);
-
-      if (!payload) {
-        throw new BadRequestException('Token is expired.');
-      }
+      const payload = await this.verifyToken(token.token);
 
       const tokenPair = await this.createTokenPair({
         id: payload.id,
@@ -45,6 +41,20 @@ export class TokenService {
       });
 
       return tokenPair;
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
+  }
+
+  public async verifyToken(token: string): Promise<IJwtPayload> {
+    try {
+      const payload = await this.jwtService.verifyAsync(token);
+
+      if (!payload) {
+        throw new BadRequestException('Token is expired.');
+      }
+
+      return payload;
     } catch (error) {
       throw new BadRequestException(error);
     }
