@@ -13,7 +13,8 @@ export const Logout = () => {
     await logout();
   }, []);
   const returnHandler = useCallback(() => {
-    navigate(`/${state}`);
+    const path = state === null ? 'task-manager' : state;
+    navigate(`/${path}`);
   }, [state]);
 
   return (
