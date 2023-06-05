@@ -9,4 +9,9 @@ interface ILogin {
   email: string;
 }
 
-export type { ISignup, ILogin }
+interface IResetPassword {
+  password: string;
+  token: string;
+}
+
+export type { ISignup, ILogin, IResetPassword };
