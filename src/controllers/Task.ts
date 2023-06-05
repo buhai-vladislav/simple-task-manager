@@ -19,6 +19,7 @@ import {
   DEFAULT_PAGINATION_LIMIT,
 } from '../utils/constants';
 import { OrderBy } from '../types/Pagination';
+import type { IGetTasksResponse } from '../types/Task';
 
 @Controller('/tasks')
 export class TaskController {
@@ -52,7 +53,7 @@ export class TaskController {
     @Query('search') search: string,
     @Query('orderBy') orderBy: OrderBy = OrderBy.ASC,
     @Req() request: any,
-  ) {
+  ): Promise<IGetTasksResponse> {
     const authorId = request?.user?.id;
     return this.taskService.getTasks(authorId, {
       limit,

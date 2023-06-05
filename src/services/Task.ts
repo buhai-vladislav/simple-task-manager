@@ -7,8 +7,8 @@ import {
   OperationType,
   UpdateCheckListItemDto,
 } from '../dtos/CheckListItem';
-import { ITask, TaskFindOptions } from '../types/Task';
-import { IPaginationMeta } from '../types/Pagination';
+import type { IGetTasksResponse, ITask, TaskFindOptions } from '../types/Task';
+import type { IPaginationMeta } from '../types/Pagination';
 
 @Injectable()
 export class TaskService {
@@ -97,7 +97,10 @@ export class TaskService {
     }
   }
 
-  public async getTasks(authorId: string, findOptions: TaskFindOptions) {
+  public async getTasks(
+    authorId: string,
+    findOptions: TaskFindOptions,
+  ): Promise<IGetTasksResponse> {
     try {
       const { limit, page, orderBy, search } = findOptions;
       const skip = page >= 1 ? (page - 1) * limit : limit;

@@ -7,6 +7,8 @@ import { ResetPasswordDto } from '../dtos/ResetPassword';
 import { TokenService } from '../services/Token';
 import { ForgotPasswordDto } from '../dtos/ForgotPassword';
 import { Request } from 'express';
+import type { ISigninResponse } from '../types/Auth';
+import type { ITokenPair } from '../types/TokenPair';
 
 @Controller('/auth')
 export class AuthController {
@@ -17,13 +19,13 @@ export class AuthController {
 
   @PublicRoute()
   @Post('/signup')
-  public async signup(@Body() signupDto: SignupDto) {
+  public async signup(@Body() signupDto: SignupDto): Promise<string> {
     return this.authService.signup(signupDto);
   }
 
   @PublicRoute()
   @Post('/signin')
-  public async login(@Body() loginDto: LoginDto) {
+  public async login(@Body() loginDto: LoginDto): Promise<ISigninResponse> {
     return this.authService.signin(loginDto);
   }
 
@@ -32,13 +34,15 @@ export class AuthController {
   public async resetPassword(
     @Query('token') token: string,
     @Body() resetPassDto: ResetPasswordDto,
-  ) {
+  ): Promise<string> {
     return this.authService.resetPassword(resetPassDto, token);
   }
 
   @PublicRoute()
   @Post('/token-pair/:token')
-  public async createTokenPair(@Param('token') token: string) {
+  public async createTokenPair(
+    @Param('token') token: string,
+  ): Promise<ITokenPair> {
     return this.tokenService.getNewTokenPair(token);
   }
 

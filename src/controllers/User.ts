@@ -17,7 +17,7 @@ export class UserController {
   public async updateUser(
     @Req() request: any,
     @Body() updateUserDto: UpdateUserDto,
-  ) {
+  ): Promise<Partial<User>> {
     const id = request?.user?.id;
     return this.userService.updateUser({ id }, updateUserDto);
   }
