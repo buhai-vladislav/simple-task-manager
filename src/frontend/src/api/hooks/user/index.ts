@@ -1,3 +1,4 @@
-import { useGetSelf } from "./useGetSelf";
+import { useGetSelf } from './useGetSelf';
+import { useUpdateUser } from './useUpdateUser';
 
-export { useGetSelf }
+export { useGetSelf, useUpdateUser };

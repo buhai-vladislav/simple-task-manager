@@ -5,7 +5,7 @@ export {
   useForgotPassword,
   useResetPassword,
 } from './auth';
-export { useGetSelf } from './user';
+export { useGetSelf, useUpdateUser } from './user';
 export {
   useGetTasks,
   useUpdateTask,
