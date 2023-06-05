@@ -13,11 +13,12 @@ export class UserController {
     return this.userService.findOne({ id });
   }
 
-  @Put('/:userId')
+  @Put()
   public async updateUser(
-    @Param('userId') userId: string,
+    @Req() request: any,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    return this.userService.updateUser({ id: userId }, updateUserDto);
+    const id = request?.user?.id;
+    return this.userService.updateUser({ id }, updateUserDto);
   }
 }
