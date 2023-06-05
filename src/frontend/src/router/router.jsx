@@ -6,6 +6,7 @@ import { TaskBoard } from '../components/TaskBoard';
 import { Logout } from '../components/Logout';
 import { ForgotPassword } from '../components/ForgotPassword';
 import { ResetPassword } from '../components/ResetPassword';
+import { Profile } from '../components/Profile';
 
 export const router = createBrowserRouter([
   {
@@ -34,7 +35,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/profile',
-        element: <></>,
+        element: <Profile />,
       },
       {
         path: '/logout',
