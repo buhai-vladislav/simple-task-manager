@@ -3,7 +3,7 @@ import axios from '../../api-instance';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const updateTaskAction = async (body: IUpdateTask) => {
-  return await axios.put('/tasks', body);
+  return await axios.put<ITask>('/tasks', body);
 };
 
 export const useUpdateTask = () => {

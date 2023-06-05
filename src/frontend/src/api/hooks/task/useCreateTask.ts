@@ -1,9 +1,9 @@
-import { ICreateTask } from '../../../types/Task';
+import { ICreateTask, ITask } from '../../../types/Task';
 import axios from '../../api-instance';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const createTaskAction = async (body: ICreateTask) => {
-  return await axios.post('/tasks', body);
+  return await axios.post<ITask>('/tasks', body);
 };
 
 export const useCreateTask = () => {

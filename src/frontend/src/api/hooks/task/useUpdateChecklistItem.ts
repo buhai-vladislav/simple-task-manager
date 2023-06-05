@@ -1,9 +1,13 @@
-import { ITask, IUpdateChecklistItem } from '../../../types/Task';
+import {
+  ICheckListItem,
+  ITask,
+  IUpdateChecklistItem,
+} from '../../../types/Task';
 import axios from '../../api-instance';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const updateChecklistItemAction = async (data: IUpdateChecklistItem) => {
-  return await axios.put('/checklist', { items: [data] });
+  return await axios.put<ICheckListItem[]>('/checklist', { items: [data] });
 };
 
 export const useUpdateChecklistItem = (taskId: string) => {

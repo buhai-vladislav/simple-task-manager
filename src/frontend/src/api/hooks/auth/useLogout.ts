@@ -6,7 +6,7 @@ import { setMenuKey } from '../../../store/reducers/navigation';
 
 const logoutAction = async () => {
   const token = localStorage.getItem('refresh-token');
-  return await axios.post(`/auth/logout/${token}`);
+  return await axios.post<boolean>(`/auth/logout/${token}`);
 };
 
 export const useLogout = () => {

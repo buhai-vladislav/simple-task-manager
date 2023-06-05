@@ -77,7 +77,7 @@ export const ResetPassword = () => {
             type="primary"
             htmlType="submit"
             loading={isLoading}
-            disabled={!formik.isValid || !formik.dirty || data?.data}
+            disabled={!formik.isValid || !formik.dirty || !!data?.data}
           >
             Reset
           </Button>

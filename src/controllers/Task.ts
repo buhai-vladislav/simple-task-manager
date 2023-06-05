@@ -19,7 +19,7 @@ import {
   DEFAULT_PAGINATION_LIMIT,
 } from '../utils/constants';
 import { OrderBy } from '../types/Pagination';
-import type { IGetTasksResponse } from '../types/Task';
+import type { IGetTasksResponse, ITask } from '../types/Task';
 
 @Controller('/tasks')
 export class TaskController {
@@ -31,7 +31,9 @@ export class TaskController {
   }
 
   @Put()
-  public async updateTask(@Body() updateTaskDto: UpdateTaskDto): Promise<Task> {
+  public async updateTask(
+    @Body() updateTaskDto: UpdateTaskDto,
+  ): Promise<ITask> {
     return this.taskService.updateTask(updateTaskDto);
   }
 

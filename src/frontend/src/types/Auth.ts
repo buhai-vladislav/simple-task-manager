@@ -1,3 +1,5 @@
+import { IUser } from './User';
+
 interface ISignup {
   email: string;
   password: string;
@@ -14,4 +16,13 @@ interface IResetPassword {
   token: string;
 }
 
-export type { ISignup, ILogin, IResetPassword };
+interface ITokenPair {
+  accessToken: string;
+  refreshToken: string;
+}
+
+interface ILoginResponse extends ITokenPair {
+  user: IUser;
+}
+
+export type { ISignup, ILogin, IResetPassword, ITokenPair, ILoginResponse };

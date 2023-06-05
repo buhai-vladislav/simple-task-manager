@@ -2,7 +2,7 @@ import axios from '../../api-instance';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const removeTaskAction = async (id: string) => {
-  return await axios.delete(`/tasks/${id}`);
+  return await axios.delete<boolean>(`/tasks/${id}`);
 };
 
 export const useRemoveTask = () => {

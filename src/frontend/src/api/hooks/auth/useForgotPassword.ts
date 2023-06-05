@@ -2,7 +2,7 @@ import axios from '../../api-instance';
 import { useMutation } from '@tanstack/react-query';
 
 const forgotPasswordAction = async (email: string) => {
-  return await axios.post('/auth/forgot-password', { email });
+  return await axios.post<string>('/auth/forgot-password', { email });
 };
 
 export const useForgotPassword = () => {

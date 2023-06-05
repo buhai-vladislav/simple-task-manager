@@ -10,9 +10,7 @@ interface ITask extends Task {
 }
 
 interface IGetTasksResponse {
-  tasks: (Task & {
-    checklistItems: CheckListItem[];
-  })[];
+  tasks: ITask[];
   pagination: IPaginationMeta;
 }
 
