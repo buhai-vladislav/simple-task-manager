@@ -7,8 +7,8 @@ import {
   OperationType,
   UpdateCheckListItemDto,
 } from '../dtos/CheckListItem';
-import { ITask, TaskFindOptions } from 'src/types/Task';
-import { IPaginationMeta } from 'src/types/Pagination';
+import { ITask, TaskFindOptions } from '../types/Task';
+import { IPaginationMeta } from '../types/Pagination';
 
 @Injectable()
 export class TaskService {

@@ -6,9 +6,9 @@ import { PrismaService } from '../services/Prisma';
 import { TokenService } from '../services/Token';
 import { UserService } from '../services/User';
 import { JwtStrategy } from '../strategies/JwtStrategy';
-import { AuthService } from 'src/services/Auth';
+import { AuthService } from '../services/Auth';
 import { ConfigModule } from '@nestjs/config';
-import { MailService } from 'src/services/Mail';
+import { MailService } from '../services/Mail';
 
 @Module({
   imports: [

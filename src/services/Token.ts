@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from './Prisma';
 import { JwtService } from '@nestjs/jwt';
 import { ITokenPair } from '../types/TokenPair';
-import { IJwtPayload } from 'src/types/JwtPayload';
+import { IJwtPayload } from '../types/JwtPayload';
 
 @Injectable()
 export class TokenService {

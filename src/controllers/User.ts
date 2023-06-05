@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Put, Req } from '@nestjs/common';
 import { UserService } from '../services/User';
-import { UpdateUserDto } from 'src/dtos/User';
+import { UpdateUserDto } from '../dtos/User';
 import { User } from '@prisma/client';
 
 @Controller('/users')

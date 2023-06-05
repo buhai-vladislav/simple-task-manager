@@ -5,7 +5,7 @@ import { PublicRoute } from '../guards/PublicRoute';
 import { LoginDto } from '../dtos/Login';
 import { ResetPasswordDto } from '../dtos/ResetPassword';
 import { TokenService } from '../services/Token';
-import { ForgotPasswordDto } from 'src/dtos/ForgotPassword';
+import { ForgotPasswordDto } from '../dtos/ForgotPassword';
 import { Request } from 'express';
 
 @Controller('/auth')
