@@ -15,8 +15,10 @@ async function bootstrap() {
   app.enableCors({ origin: ['http://localhost:3000'] });
 
   const config = new DocumentBuilder()
-    .setTitle('Test project API')
-    .setDescription('The DevIt test project API endpoints documentation')
+    .setTitle('STM API')
+    .setDescription(
+      'The Simple task manager project API endpoints documentation',
+    )
     .setVersion('1.0')
     .addBearerAuth(
       {
