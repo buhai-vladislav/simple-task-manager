@@ -7,6 +7,7 @@ import { Logout } from '../components/Logout';
 import { ForgotPassword } from '../components/ForgotPassword';
 import { ResetPassword } from '../components/ResetPassword';
 import { Profile } from '../components/Profile';
+import { Home } from '../components/Home';
 
 export const router = createBrowserRouter([
   {
@@ -15,7 +16,7 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <></>,
+        element: <Home />,
       },
       {
         path: '/login',
