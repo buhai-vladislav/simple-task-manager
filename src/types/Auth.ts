@@ -1,8 +1,8 @@
 import { User } from '@prisma/client';
-import type { ITokenPair } from './TokenPair';
+import { TokenPair } from './TokenPair';
 
-interface ISigninResponse extends ITokenPair {
+class SigninResponse extends TokenPair {
   user: Partial<User>;
 }
 
-export type { ISigninResponse };
+export { SigninResponse };

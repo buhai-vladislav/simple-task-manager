@@ -1,6 +1,6 @@
-interface ITokenPair {
+class TokenPair {
   accessToken: string;
   refreshToken: string;
 }
 
-export type { ITokenPair };
+export { TokenPair };

@@ -1,14 +1,14 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from './Prisma';
-import { CheckListItem, Task } from '@prisma/client';
+import { CheckListItem } from '@prisma/client';
 import { CreateTaskDto, UpdateTaskDto } from '../dtos/Task';
 import {
   CheckListItemDto,
   OperationType,
   UpdateCheckListItemDto,
 } from '../dtos/CheckListItem';
-import type { IGetTasksResponse, ITask, TaskFindOptions } from '../types/Task';
-import type { IPaginationMeta } from '../types/Pagination';
+import { GetTasksResponse, Task, TaskFindOptions } from '../types/Task';
+import { PaginationMeta } from '../types/Pagination';
 
 @Injectable()
 export class TaskService {
@@ -34,7 +34,7 @@ export class TaskService {
     }
   }
 
-  public async updateTask(updateTaskDto: UpdateTaskDto): Promise<ITask> {
+  public async updateTask(updateTaskDto: UpdateTaskDto): Promise<Task> {
     try {
       const { id, description, title, checkListItems } = updateTaskDto;
       const removing: string[] = checkListItems
@@ -46,7 +46,7 @@ export class TaskService {
       const adding = checkListItems
         .filter(({ type }) => type === OperationType.ADD)
         .map(({ title, completed }) => ({ title, completed }));
-      let task: ITask = null;
+      let task: Task = null;
 
       if (title || description) {
         task = await this.prismaService.task.update({
@@ -100,7 +100,7 @@ export class TaskService {
   public async getTasks(
     authorId: string,
     findOptions: TaskFindOptions,
-  ): Promise<IGetTasksResponse> {
+  ): Promise<GetTasksResponse> {
     try {
       const { limit, page, orderBy, search } = findOptions;
       const skip = page >= 1 ? (page - 1) * limit : limit;
@@ -145,7 +145,7 @@ export class TaskService {
       const [count, tasks] = await Promise.all([countAction, tasksAction]);
 
       const totalPages = Math.ceil(count / limit);
-      const pagination: IPaginationMeta = {
+      const pagination: PaginationMeta = {
         page,
         limit,
         totalPages,

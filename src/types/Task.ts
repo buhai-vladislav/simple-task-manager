@@ -1,18 +1,23 @@
-import { CheckListItem, Task } from '@prisma/client';
-import { FindOptions, IPaginationMeta } from './Pagination';
+import { CheckListItem } from '@prisma/client';
+import { FindOptions, PaginationMeta } from './Pagination';
 
 class TaskFindOptions extends FindOptions {
   search?: string;
 }
 
-interface ITask extends Task {
+class Task {
+  id: string;
+  title: string;
+  description?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  authorId: string;
   checklistItems?: CheckListItem[];
 }
 
-interface IGetTasksResponse {
-  tasks: ITask[];
-  pagination: IPaginationMeta;
+class GetTasksResponse {
+  tasks: Task[];
+  pagination: PaginationMeta;
 }
 
-export type { ITask, IGetTasksResponse };
-export { TaskFindOptions };
+export { Task, GetTasksResponse, TaskFindOptions };

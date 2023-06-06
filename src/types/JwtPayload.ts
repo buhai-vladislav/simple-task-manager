@@ -1,6 +1,6 @@
-interface IJwtPayload {
+class JwtPayload {
   id: string;
   email: string;
 }
 
-export type { IJwtPayload };
+export { JwtPayload };

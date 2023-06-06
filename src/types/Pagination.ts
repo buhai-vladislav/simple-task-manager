@@ -9,12 +9,11 @@ enum OrderBy {
   DESC = 'desc',
 }
 
-interface IPaginationMeta {
+class PaginationMeta {
   page: number;
   limit: number;
   totalPages: number;
   count: number;
 }
 
-export type { IPaginationMeta };
-export { OrderBy, FindOptions };
+export { PaginationMeta, OrderBy, FindOptions };

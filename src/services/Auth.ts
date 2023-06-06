@@ -14,9 +14,9 @@ import { SignupDto } from '../dtos/Signup';
 import { TokenService } from './Token';
 import { ResetPasswordDto } from '../dtos/ResetPassword';
 import { MailService } from './Mail';
-import type { IJwtPayload } from '../types/JwtPayload';
+import { JwtPayload } from '../types/JwtPayload';
 import type { Request } from 'express';
-import type { ISigninResponse } from '../types/Auth';
+import { SigninResponse } from '../types/Auth';
 
 @Injectable()
 export class AuthService {
@@ -66,12 +66,12 @@ export class AuthService {
     return null;
   }
 
-  public async signin(signinDto: LoginDto): Promise<ISigninResponse> {
+  public async signin(signinDto: LoginDto): Promise<SigninResponse> {
     const user = await this.validateUser(signinDto);
 
     if (user !== null) {
       const { email } = signinDto;
-      const payload: IJwtPayload = { id: user.id, email };
+      const payload: JwtPayload = { id: user.id, email };
 
       const tokenPair = await this.tokenService.createTokenPair(payload);
       await this.prismaService.token.create({

@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from './Prisma';
 import { JwtService } from '@nestjs/jwt';
-import { ITokenPair } from '../types/TokenPair';
-import { IJwtPayload } from '../types/JwtPayload';
+import { TokenPair } from '../types/TokenPair';
+import { JwtPayload } from '../types/JwtPayload';
 
 @Injectable()
 export class TokenService {
@@ -11,7 +11,7 @@ export class TokenService {
     private readonly jwtService: JwtService,
   ) {}
 
-  public async createTokenPair(payload: IJwtPayload): Promise<ITokenPair> {
+  public async createTokenPair(payload: JwtPayload): Promise<TokenPair> {
     try {
       const accessToken = await this.jwtService.signAsync(payload);
       const refreshToken = await this.jwtService.signAsync(payload, {
@@ -24,7 +24,7 @@ export class TokenService {
     }
   }
 
-  public async getNewTokenPair(refreshToken: string): Promise<ITokenPair> {
+  public async getNewTokenPair(refreshToken: string): Promise<TokenPair> {
     try {
       const token = await this.prismaSerice.token.findUnique({
         where: { token: refreshToken },
@@ -46,7 +46,7 @@ export class TokenService {
     }
   }
 
-  public async verifyToken(token: string): Promise<IJwtPayload> {
+  public async verifyToken(token: string): Promise<JwtPayload> {
     try {
       const payload = await this.jwtService.verifyAsync(token);
 

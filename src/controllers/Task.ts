@@ -13,13 +13,12 @@ import {
 } from '@nestjs/common';
 import { TaskService } from '../services/Task';
 import { CreateTaskDto, UpdateTaskDto } from '../dtos/Task';
-import { Task } from '@prisma/client';
 import {
   DEFAULT_PAGINATION_PAGE,
   DEFAULT_PAGINATION_LIMIT,
 } from '../utils/constants';
 import { OrderBy } from '../types/Pagination';
-import type { IGetTasksResponse, ITask } from '../types/Task';
+import { GetTasksResponse, Task } from '../types/Task';
 
 @Controller('/tasks')
 export class TaskController {
@@ -31,9 +30,7 @@ export class TaskController {
   }
 
   @Put()
-  public async updateTask(
-    @Body() updateTaskDto: UpdateTaskDto,
-  ): Promise<ITask> {
+  public async updateTask(@Body() updateTaskDto: UpdateTaskDto): Promise<Task> {
     return this.taskService.updateTask(updateTaskDto);
   }
 
@@ -55,7 +52,7 @@ export class TaskController {
     @Query('search') search: string,
     @Query('orderBy') orderBy: OrderBy = OrderBy.ASC,
     @Req() request: any,
-  ): Promise<IGetTasksResponse> {
+  ): Promise<GetTasksResponse> {
     const authorId = request?.user?.id;
     return this.taskService.getTasks(authorId, {
       limit,
