@@ -17,10 +17,12 @@ import { CreateTaskDto, UpdateTaskDto } from '../dtos/Task';
 import {
   DEFAULT_PAGINATION_PAGE,
   DEFAULT_PAGINATION_LIMIT,
+  JWT_BEARER_SWAGGER_AUTH_NAME,
 } from '../utils/constants';
 import { OrderBy } from '../types/Pagination';
 import { GetTasksResponse, Task } from '../types/Task';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiOperation,
   ApiParam,
@@ -48,6 +50,7 @@ export class TaskController {
     description: "The checklist items wasn't created, or something went wrong.",
   })
   @ApiBody({ type: CreateTaskDto })
+  @ApiBearerAuth(JWT_BEARER_SWAGGER_AUTH_NAME)
   @Post()
   public async createtask(@Body() createTaskDto: CreateTaskDto): Promise<Task> {
     return this.taskService.createTask(createTaskDto);
@@ -67,6 +70,7 @@ export class TaskController {
     description: "The task wasn't created, or something went wrong.",
   })
   @ApiBody({ type: UpdateTaskDto })
+  @ApiBearerAuth(JWT_BEARER_SWAGGER_AUTH_NAME)
   @Put()
   public async updateTask(@Body() updateTaskDto: UpdateTaskDto): Promise<Task> {
     return this.taskService.updateTask(updateTaskDto);
@@ -89,6 +93,7 @@ export class TaskController {
     name: 'taskId',
     description: 'The id of the task to delete.',
   })
+  @ApiBearerAuth(JWT_BEARER_SWAGGER_AUTH_NAME)
   @Delete('/:taskId')
   public async deleteTask(@Param('taskId') taskId: string): Promise<boolean> {
     return this.taskService.deleteTask(taskId);
@@ -124,6 +129,7 @@ export class TaskController {
     name: 'orderBy',
     enum: OrderBy,
   })
+  @ApiBearerAuth(JWT_BEARER_SWAGGER_AUTH_NAME)
   @Get()
   public async getTasks(
     @Query('page', new DefaultValuePipe(DEFAULT_PAGINATION_PAGE), ParseIntPipe)

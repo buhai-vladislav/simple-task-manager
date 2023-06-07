@@ -1,8 +1,15 @@
 import { Body, Controller, Get, HttpStatus, Put, Req } from '@nestjs/common';
 import { UserService } from '../services/User';
 import { UpdateUserDto } from '../dtos/User';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { User } from '../types/User';
+import { JWT_BEARER_SWAGGER_AUTH_NAME } from '../utils/constants';
 
 @ApiTags('Users')
 @Controller('/users')
@@ -22,6 +29,7 @@ export class UserController {
     status: HttpStatus.BAD_REQUEST,
     description: "The user wasn't found, or something went wrong.",
   })
+  @ApiBearerAuth(JWT_BEARER_SWAGGER_AUTH_NAME)
   @Get('/myself')
   public async getMySelf(@Req() request: any): Promise<Partial<User>> {
     const id = request?.user?.id;
@@ -42,6 +50,7 @@ export class UserController {
     description: "The user wasn't updated, or something went wrong.",
   })
   @ApiBody({ type: UpdateUserDto })
+  @ApiBearerAuth(JWT_BEARER_SWAGGER_AUTH_NAME)
   @Put()
   public async updateUser(
     @Req() request: any,
