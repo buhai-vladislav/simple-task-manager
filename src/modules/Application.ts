@@ -4,6 +4,8 @@ import { AuthModule } from './Auth';
 import { UserModule } from './User';
 import { TaskModule } from './Task';
 import { MailModule } from './Mail';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -17,6 +19,9 @@ import { MailModule } from './Mail';
     UserModule,
     TaskModule,
     MailModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '../../src/frontend/build'),
+    }),
   ],
   controllers: [],
   providers: [],
