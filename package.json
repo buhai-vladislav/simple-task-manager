@@ -15,7 +15,9 @@
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "services:start": "docker-compose up",
     "services:stop": "docker-compose down",
-    "services:reset": "docker-compose down -v"
+    "services:reset": "docker-compose down -v",
+    "migrate": "npx prisma migrate dev",
+    "serve": "cd src/frontend && npm run build && cd ../../ && npm run start"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.8.1",
