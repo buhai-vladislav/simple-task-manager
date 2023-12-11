@@ -1,64 +1,17 @@
-import { FC, useCallback, useEffect } from 'react';
-import { FormWrapper } from '../shared/FormWrapper';
-import { ILoginFormProps } from './Login.props';
-import { useFormik } from 'formik';
+import { FC } from 'react';
 import { Button, Input } from 'antd';
 import {
   EyeInvisibleOutlined,
   EyeTwoTone,
   MailOutlined,
 } from '@ant-design/icons';
+
+import { FormWrapper } from '../shared/FormWrapper';
 import { InputWrapper } from '../shared/InputWrapper';
-import { validationSchema } from './Login.helper';
-import { useLogin } from '../../api/hooks';
-import { ToastType, useToast } from '../../hooks/useToast';
-import { useAppDispatch } from '../../store';
-import { setUser } from '../../store/reducers/user';
-import { useNavigate } from 'react-router-dom';
-import { setLocation, setMenuKey } from '../../store/reducers/navigation';
-import { getErrorMessage } from '../../utils/error';
+import { useLogin } from './hooks/useLogin';
 
 export const Login: FC = () => {
-  const { data, mutateAsync: login, isLoading } = useLogin();
-  const [contextHolder, openNotification] = useToast('bottom');
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-
-  const onSubmit = useCallback(async (values: ILoginFormProps) => {
-    try {
-      const { email, password } = values;
-      await login({ email, password });
-    } catch (error) {
-      const message = getErrorMessage(error);
-      openNotification({ message }, ToastType.ERROR)();
-    } finally {
-      formik.setSubmitting(false);
-    }
-  }, []);
-  const navigateHandler = useCallback(() => {
-    navigate('/forgot-password');
-  }, []);
-
-  useEffect(() => {
-    if (data?.data) {
-      localStorage.setItem('access-token', data.data?.accessToken);
-      localStorage.setItem('refresh-token', data.data?.refreshToken);
-      dispatch(setUser(data.data?.user));
-      dispatch(setMenuKey('loggedIn'));
-      dispatch(setLocation('task-manager'));
-      navigate('/task-manager');
-    }
-  }, [data]);
-
-  const formik = useFormik<ILoginFormProps>({
-    initialValues: {
-      email: '',
-      password: '',
-    },
-    onSubmit,
-    validationSchema,
-    validateOnChange: false,
-  });
+  const [isLoading, contextHolder, navigateHandler, formik] = useLogin();
 
   return (
     <FormWrapper title="Login">

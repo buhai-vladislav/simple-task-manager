@@ -1,15 +1,15 @@
 import { Menu } from 'antd';
+import { FC } from 'react';
 import {
   ContainerOutlined,
   LoginOutlined,
   UserAddOutlined,
 } from '@ant-design/icons';
-import { useAppDispatch, useAppSelector } from '../../store';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { setLocation } from '../../store/reducers/navigation';
-import type { INavigation } from './Header.props';
-import { FC, useEffect } from 'react';
+
+import { useHeader } from './hooks/useHeader';
+
 import type { MenuProps } from 'antd';
+import type { INavigation } from './Header.props';
 
 const indexItems: MenuProps['items'] = [
   {
@@ -48,21 +48,7 @@ const navigation: INavigation = {
 };
 
 export const Header: FC = () => {
-  const { key, location } = useAppSelector((state) => state.navigation);
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const { pathname } = useLocation();
-
-  useEffect(() => {
-    if (pathname) {
-      dispatch(setLocation(pathname.replaceAll('/', '')));
-    }
-  }, [pathname]);
-
-  const changeHandler: MenuProps['onClick'] = ({ key }) => {
-    dispatch(setLocation(key));
-    navigate(`/${key}`, { state: location });
-  };
+  const [key, location, changeHandler] = useHeader();
 
   return (
     <Menu

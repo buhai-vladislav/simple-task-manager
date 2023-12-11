@@ -1,58 +1,13 @@
+import { Button, Input } from 'antd';
+
 import { ResetPasswordWrapper } from './ResetPassword.presets';
-import { useFormik } from 'formik';
-import { validationSchema } from './ResetPassword.helper';
-import type { IResetPasswordValues } from './ResetPassword.props';
 import { FormWrapper } from '../shared/FormWrapper';
 import { InputWrapper } from '../shared/InputWrapper';
-import { Button, Input } from 'antd';
-import { useCallback, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { ToastType, useToast } from '../../hooks/useToast';
-import { getErrorMessage } from '../../utils/error';
-import { useResetPassword } from '../../api/hooks';
+import { useResetPassword } from './hooks/useResetPassword';
 
 export const ResetPassword = () => {
-  const [params] = useSearchParams();
-  const [contextHolder, openNotification] = useToast('bottom');
-  const navigate = useNavigate();
-  const { data, isLoading, mutateAsync: resetPassword } = useResetPassword();
-
-  const onSubmit = useCallback(
-    async ({ password }: IResetPasswordValues) => {
-      try {
-        const token = params.get('token');
-        if (!token) throw new Error('Token is not provided!');
-
-        await resetPassword({ password, token });
-      } catch (error) {
-        const message = getErrorMessage(error);
-        openNotification({ message }, ToastType.ERROR)();
-      }
-    },
-    [params],
-  );
-  const navigateHandler = useCallback(() => {
-    navigate('/login');
-  }, []);
-
-  const formik = useFormik<IResetPasswordValues>({
-    initialValues: {
-      password: '',
-      confirmPassword: '',
-    },
-    onSubmit,
-    validationSchema,
-  });
-
-  useEffect(() => {
-    if (data?.data) {
-      openNotification(
-        { message: data.data },
-        ToastType.SUCCESS,
-        navigateHandler,
-      )();
-    }
-  }, [data]);
+  const [data, contextHolder, isLoading, navigateHandler, formik] =
+    useResetPassword();
 
   return (
     <FormWrapper>

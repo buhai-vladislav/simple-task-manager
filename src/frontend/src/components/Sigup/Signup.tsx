@@ -1,7 +1,4 @@
-import { FC, useCallback, useEffect } from 'react';
-import { FormWrapper } from '../shared/FormWrapper';
-import { ISignupFormProps } from './Signup.props';
-import { useFormik } from 'formik';
+import { FC } from 'react';
 import { Button, Input } from 'antd';
 import {
   EyeInvisibleOutlined,
@@ -9,54 +6,13 @@ import {
   MailOutlined,
   UserOutlined,
 } from '@ant-design/icons';
+
+import { FormWrapper } from '../shared/FormWrapper';
 import { InputWrapper } from '../shared/InputWrapper';
-import { validationSchema } from './Signup.helper';
-import { useSignup } from '../../api/hooks';
-import { AxiosError } from 'axios';
-import { ToastType, useToast } from '../../hooks/useToast';
-import { useNavigate } from 'react-router-dom';
+import { useSignUp } from './hooks/useSignUp';
 
 export const Signup: FC = () => {
-  const { data, mutateAsync: signUp, isLoading } = useSignup();
-  const [contextHolder, openNotification] = useToast('bottom');
-  const navigate = useNavigate();
-
-  const onSubmit = useCallback(async (values: ISignupFormProps) => {
-    try {
-      const { email, fullname, password } = values;
-      await signUp({ email, fullname, password });
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        console.log(error?.response?.data?.message);
-        openNotification(
-          { message: error?.response?.data?.message },
-          ToastType.ERROR,
-        )();
-      }
-    } finally {
-      formik.setSubmitting(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (data?.data) {
-      openNotification({ message: data.data }, ToastType.SUCCESS, () => {
-        navigate('/login');
-      })();
-    }
-  }, [data]);
-
-  const formik = useFormik<ISignupFormProps>({
-    initialValues: {
-      email: '',
-      fullname: '',
-      password: '',
-      confirmPassword: '',
-    },
-    onSubmit,
-    validationSchema,
-    validateOnChange: false,
-  });
+  const [isLoading, contextHolder, formik] = useSignUp();
 
   return (
     <FormWrapper title="Sign up">

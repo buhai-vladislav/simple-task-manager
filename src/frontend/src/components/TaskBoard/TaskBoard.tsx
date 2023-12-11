@@ -1,70 +1,29 @@
-import { ChangeEvent, useCallback, useEffect, useState } from 'react';
-import { useGetTasks, useRemoveTask } from '../../api/hooks';
 import { TaskBoardWrapper } from './TaskBoard.presets';
 import { TaskCard } from './components/TaskCard';
 import { Button, Input, Pagination, Spin } from 'antd';
 import { PlusSquareOutlined } from '@ant-design/icons';
-import useDebounce from '../../hooks/useDebounce';
 import { ModalType, TaskModal } from './components/TaskModal';
-import { ITask, OrderBy } from '../../types/Task';
-import { useToast } from '../../hooks/useToast';
+import { UseTaskBoard, useTaskBoard } from './hooks/useTaskBoard';
 
 export const TaskBoard = () => {
-  const [search, setSearch] = useState('');
-  const [page, setPage] = useState(1);
-  const [open, setOpen] = useState(false);
-  const [item, setItem] = useState<ITask | undefined>(undefined);
-  const [type, setType] = useState<ModalType>(ModalType.VIEW);
-  const [contextHolder, openNotification] = useToast('bottom');
-  const debouncedSearch = useDebounce(search);
-
-  const {
-    data: tasks,
-    isFetching,
-    refetch: getTasks,
-  } = useGetTasks({
+  const [
+    tasks,
     page,
-    limit: 9,
-    search: debouncedSearch,
-    orderBy: OrderBy.DESC,
-  });
-  const { mutateAsync: removeTask, isLoading: isRemoving } = useRemoveTask();
-
-  useEffect(() => {
-    getTasks();
-  }, [page, debouncedSearch]);
-
-  const onSearchChnage = useCallback(
-    ({ target }: ChangeEvent<HTMLInputElement>) => {
-      setSearch(target.value);
-    },
-    [],
-  );
-  const openModal = useCallback(() => {
-    setOpen(true);
-  }, []);
-  const handleOk = useCallback(() => {
-    setOpen(false);
-    setItem(undefined);
-  }, []);
-  const handleClose = useCallback(() => {
-    setOpen(false);
-    setItem(undefined);
-  }, []);
-  const handleItemClick = useCallback(
-    (id: string, type: ModalType = ModalType.VIEW) =>
-      () => {
-        const task = tasks?.data.tasks.find((task) => task.id === id);
-        setType(type);
-        setItem(task);
-        openModal();
-      },
-    [tasks?.data.tasks],
-  );
-  const createTaskHandler = useCallback(() => {
-    setType(ModalType.CREATE);
-    openModal();
-  }, []);
+    open,
+    item,
+    type,
+    contextHolder,
+    isFetching,
+    isRemoving,
+    openNotification,
+    setPage,
+    removeTask,
+    onSearchChnage,
+    handleOk,
+    handleClose,
+    handleItemClick,
+    createTaskHandler,
+  ]: UseTaskBoard = useTaskBoard();
 
   return (
     <TaskBoardWrapper>

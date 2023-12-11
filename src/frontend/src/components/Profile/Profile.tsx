@@ -1,70 +1,19 @@
-import { useFormik } from 'formik';
-import { validationSchema } from './Profile.helper';
-import type { IProfileValues } from './Profile.props';
-import { useCallback, useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../store';
-import { useLogout, useUpdateUser } from '../../api/hooks';
-import { setUser } from '../../store/reducers/user';
-import { getErrorMessage } from '../../utils/error';
-import { ToastType, useToast } from '../../hooks/useToast';
+import { Button, Input } from 'antd';
+
 import { FormWrapper } from '../shared/FormWrapper';
 import { ProfileWrapper } from './Profile.presets';
 import { InputWrapper } from '../shared/InputWrapper';
-import { Button, Input } from 'antd';
+import { useProfile } from './hooks/useProfile';
 
 export const Profile = () => {
-  const { user } = useAppSelector((state) => state.user);
-  const dispatch = useAppDispatch();
-  const [contextHolder, openNotification] = useToast('bottom');
-  const [disabled, setDisabled] = useState(true);
-  const { data, isLoading, mutateAsync: updateUser } = useUpdateUser();
-  const { isLoading: isLogouting, mutateAsync: logout } = useLogout();
-
-  const onSubmit = useCallback(async ({ email, fullname }: IProfileValues) => {
-    try {
-      await updateUser({ email, fullname });
-
-      if (email !== user?.email) {
-        await logout();
-      }
-    } catch (error) {
-      const message = getErrorMessage(error);
-      openNotification({ message }, ToastType.ERROR)();
-    }
-  }, []);
-  const disableToggle = useCallback(() => {
-    setDisabled(!disabled);
-
-    if (!disabled) {
-      formik.submitForm();
-    }
-  }, [disabled]);
-
-  const formik = useFormik<IProfileValues>({
-    initialValues: {
-      email: '',
-      fullname: '',
-    },
-    onSubmit,
-    validationSchema,
-  });
-
-  useEffect(() => {
-    if (data?.data) {
-      dispatch(setUser(data.data));
-      openNotification(
-        { message: 'User profile updated.' },
-        ToastType.SUCCESS,
-      )();
-    }
-  }, [data]);
-
-  useEffect(() => {
-    if (user) {
-      formik.setFieldValue('email', user.email, false);
-      formik.setFieldValue('fullname', user.fullname, false);
-    }
-  }, [user]);
+  const [
+    contextHolder,
+    isLoading,
+    isLogouting,
+    disabled,
+    disableToggle,
+    formik,
+  ] = useProfile();
 
   return (
     <FormWrapper>
